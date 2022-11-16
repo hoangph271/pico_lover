@@ -33,7 +33,7 @@ class _PicoControlsState extends State<PicoControls> {
   final apiRoot = '192.168.0.106';
 
   void _request(String url) async {
-    await http.post(Uri.http(apiRoot, url));
+    await http.get(Uri.http(apiRoot, url));
   }
 
   @override
