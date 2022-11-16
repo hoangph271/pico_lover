@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,11 +30,43 @@ class PicoControls extends StatefulWidget {
   State<PicoControls> createState() => _PicoControlsState();
 }
 
+class AsyncButton extends StatefulWidget {
+  const AsyncButton({super.key, required this.onPressed, required this.child});
+  final Widget child;
+  final Future<void> Function() onPressed;
+
+  @override
+  State<AsyncButton> createState() => _AsyncButtonState();
+}
+
+class _AsyncButtonState extends State<AsyncButton> {
+  var _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+        onPressed: _isLoading
+            ? null
+            : () async {
+                setState(() {
+                  _isLoading = true;
+                });
+                await widget.onPressed();
+                setState(() {
+                  _isLoading = false;
+                });
+              },
+        child: widget.child);
+  }
+}
+
 class _PicoControlsState extends State<PicoControls> {
   final apiRoot = '192.168.0.106';
 
-  void _request(String url) async {
-    await http.get(Uri.http(apiRoot, url));
+  Future<String> _request(String url) async {
+    final res = await http.get(Uri.http(apiRoot, url));
+
+    return res.body;
   }
 
   @override
@@ -46,14 +79,18 @@ class _PicoControlsState extends State<PicoControls> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            OutlinedButton(
-                onPressed: () {
-                  _request('/led_on');
+            AsyncButton(
+                onPressed: () async {
+                  final text = await _request('/led_on');
+
+                  Fluttertoast.showToast(msg: text);
                 },
                 child: const Text('LED On')),
-            OutlinedButton(
-                onPressed: () {
-                  _request('/led_off');
+            AsyncButton(
+                onPressed: () async {
+                  final text = await _request('/led_off');
+
+                  Fluttertoast.showToast(msg: text);
                 },
                 child: const Text('LED Off')),
           ],
