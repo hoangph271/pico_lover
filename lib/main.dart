@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pico_lover/led_controls.dart';
+import 'package:pico_lover/wheels_controls.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,7 +40,9 @@ class _PicoControlsState extends State<PicoControls> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[LedControls()
+          children: const <Widget>[
+            LedControls(),
+            Expanded(child: WheelsControls())
           ],
         ),
       ),
