@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'async_button.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -28,36 +30,6 @@ class PicoControls extends StatefulWidget {
 
   @override
   State<PicoControls> createState() => _PicoControlsState();
-}
-
-class AsyncButton extends StatefulWidget {
-  const AsyncButton({super.key, required this.onPressed, required this.child});
-  final Widget child;
-  final Future<void> Function() onPressed;
-
-  @override
-  State<AsyncButton> createState() => _AsyncButtonState();
-}
-
-class _AsyncButtonState extends State<AsyncButton> {
-  var _isLoading = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return OutlinedButton(
-        onPressed: _isLoading
-            ? null
-            : () async {
-                setState(() {
-                  _isLoading = true;
-                });
-                await widget.onPressed();
-                setState(() {
-                  _isLoading = false;
-                });
-              },
-        child: widget.child);
-  }
 }
 
 class _PicoControlsState extends State<PicoControls> {
