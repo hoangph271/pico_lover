@@ -12,34 +12,56 @@ class WheelsControls extends StatefulWidget {
 class _WheelsControlsState extends State<WheelsControls> {
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        AsyncButton(
-            onPressed: () async {
-              await sendPicoRequest('ui/motors/turn_left');
-            },
-            child: const Text('Turn Left')),
-        Column(
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            AsyncButton(
-                onPressed: () async {
-                  await sendPicoRequest('ui/motors/forward_both');
-                },
-                child: const Text('Forward')),
-            AsyncButton(
-                onPressed: () async {
-                  await sendPicoRequest('ui/motors/backward_both');
-                },
-                child: const Text('Forward')),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: AsyncButton(
+                  onPressed: () async {
+                    await sendPicoRequest('ui/motors/turn_left');
+                  },
+                  child: const Text('Turn Left')),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AsyncButton(
+                    onPressed: () async {
+                      await sendPicoRequest('ui/motors/forward_both');
+                    },
+                    child: const Text('Forward')),
+                AsyncButton(
+                    onPressed: () async {
+                      await sendPicoRequest('ui/motors/backward_both');
+                    },
+                    child: const Text('Backward')),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: AsyncButton(
+                  onPressed: () async {
+                    await sendPicoRequest('ui/motors/turn_right');
+                  },
+                  child: const Text('Turn Right')),
+            ),
           ],
         ),
-        AsyncButton(
-            onPressed: () async {
-              await sendPicoRequest('ui/motors/turn_right');
-            },
-            child: const Text('Turn Right')),
+        Row(
+          children: [
+            Expanded(
+              child: AsyncButton(
+                  onPressed: () async {
+                    await sendPicoRequest('ui/motors/stop');
+                  },
+                  child: const Text('Stop')),
+            ),
+          ],
+        )
       ],
     );
   }
