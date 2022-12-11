@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:fluttertoast/fluttertoast.dart';
-
-import 'async_button.dart';
+import 'package:pico_lover/led_controls.dart';
+import 'package:pico_lover/wheels_controls.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,14 +31,6 @@ class PicoControls extends StatefulWidget {
 }
 
 class _PicoControlsState extends State<PicoControls> {
-  final apiRoot = '192.168.0.106';
-
-  Future<String> _request(String url) async {
-    final res = await http.get(Uri.http(apiRoot, url));
-
-    return res.body;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,23 +38,11 @@ class _PicoControlsState extends State<PicoControls> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            AsyncButton(
-                onPressed: () async {
-                  final text = await _request('/led_on');
-
-                  Fluttertoast.showToast(msg: text);
-                },
-                child: const Text('LED On')),
-            AsyncButton(
-                onPressed: () async {
-                  final text = await _request('/led_off');
-
-                  Fluttertoast.showToast(msg: text);
-                },
-                child: const Text('LED Off')),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const <Widget>[
+            LedControls(),
+            Expanded(child: WheelsControls())
           ],
         ),
       ),
